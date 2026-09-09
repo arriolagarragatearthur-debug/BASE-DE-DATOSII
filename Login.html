@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Iniciar sesión · Base de Datos II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand-cluster">
+    <a href="index.html" class="brand-logo" aria-label="Ir al inicio">
+      <svg class="uni-logo" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M20 2 L36 9 V20 C36 29 29 35 20 38 C11 35 4 29 4 20 V9 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M20 12 L28 16 V22 C28 26.5 24.5 30 20 32 C15.5 30 12 26.5 12 22 V16 Z" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.2"/>
+        <line x1="14" y1="18" x2="26" y2="18" stroke="currentColor" stroke-width="1"/>
+        <line x1="14" y1="21" x2="26" y2="21" stroke="currentColor" stroke-width="1"/>
+        <line x1="14" y1="24" x2="22" y2="24" stroke="currentColor" stroke-width="1"/>
+      </svg>
+      <span class="brand-logo__text">UPLA</span>
+    </a>
+    <span class="brand-divider" aria-hidden="true"></span>
+    <a href="index.html" class="brand-mark" aria-label="Base de Datos II">
+      <span class="brand-mark__dot"></span>
+      <span class="brand-mark__code">AR</span>
+    </a>
+    <nav class="menu" aria-label="Navegación principal">
+      <a href="index.html" class="menu__link">Inicio</a>
+      <a href="sobreMi.html" class="menu__link">Sobre mí</a>
+      <a href="unidades.html" class="menu__link">Unidades</a>
+      <a href="login.html" class="menu__link menu__link--auth is-active">Iniciar sesión</a>
+    </nav>
+  </div>
+  <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<main>
+  <section class="login login--standalone">
+    <div class="login__panel">
+      <p class="login__eyebrow">Acceso</p>
+      <h2 class="login__title">Iniciar sesión</h2>
+      <form class="login__form" id="loginForm">
+        <label class="field">
+          <span class="field__label">Usuario</span>
+          <input class="field__input" type="text" name="usuario" placeholder="usuario" autocomplete="username" required>
+        </label>
+        <label class="field">
+          <span class="field__label">Contraseña</span>
+          <input class="field__input" type="password" name="clave" placeholder="••••••••" autocomplete="current-password" required>
+        </label>
+        <button type="submit" class="btn btn--primary btn--block">Entrar</button>
+        <p class="login__note" id="loginNote" role="status"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer__row">
+    <span class="footer__name">Arriola Garragate Anderson Ricardo</span>
+    <span class="footer__sep">·</span>
+    <span class="footer__course">Base de Datos II</span>
+  </div>
+  <div class="footer__row footer__row--muted">
+    <span>Ingeniería de Sistemas y Computación — Universidad Peruana Los Andes, Huancayo</span>
+  </div>
+  <div class="footer__row footer__row--muted">
+    <span>&copy; <span id="year"></span> Todos los derechos reservados.</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
