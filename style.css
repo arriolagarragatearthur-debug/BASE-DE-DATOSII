@@ -87,6 +87,29 @@ section{
   gap: 36px;
 }
 
+.brand-logo{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color: var(--accent);
+}
+.uni-logo{
+  width: 26px;
+  height: 26px;
+  flex-shrink: 0;
+}
+.brand-logo__text{
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+}
+.brand-divider{
+  width: 1px;
+  height: 20px;
+  background: var(--line);
+}
+
 .brand-mark{
   display:flex;
   align-items:center;
@@ -410,6 +433,241 @@ section{
 }
 
 /* =========================================================
+   ENCABEZADO DE PÁGINA (Sobre mí / Unidades)
+   ========================================================= */
+.page-head{
+  padding-top: 72px;
+  padding-bottom: 20px;
+  max-width: 680px;
+}
+.page-head__eyebrow{
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: .82rem;
+  margin: 0 0 16px;
+}
+.page-head__title{
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  line-height: 1.2;
+  margin: 0 0 16px;
+}
+.page-head__desc{
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* =========================================================
+   PERFIL (Sobre mí)
+   ========================================================= */
+.profile{
+  display:grid;
+  grid-template-columns: .8fr 1.2fr;
+  gap: 48px;
+  align-items: start;
+  padding-top: 40px;
+}
+.record--compact{ max-width: 280px; }
+.profile__text .section-title{ margin-bottom: 16px; }
+.profile__text .about__text{ margin: 0 0 16px; }
+
+/* =========================================================
+   STACK
+   ========================================================= */
+.stack__groups{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.stack__group-title{
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+  font-weight: 500;
+}
+
+/* =========================================================
+   PROYECTOS
+   ========================================================= */
+.projects__grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+.project-card{
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: border-color .15s ease;
+}
+.project-card:hover{ border-color: var(--accent-dim); }
+.project-card__title{
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  margin: 0 0 10px;
+}
+.project-card__desc{
+  color: var(--text-muted);
+  font-size: .92rem;
+  margin: 0 0 16px;
+}
+.project-card__tags{ display:flex; gap:8px; flex-wrap: wrap; }
+.tag{
+  font-family: var(--font-mono);
+  font-size: .74rem;
+  color: var(--accent);
+  background: var(--accent-soft);
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+/* =========================================================
+   TRAYECTORIA (timeline)
+   ========================================================= */
+.timeline{
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 24px;
+  border-left: 1px solid var(--line);
+  max-width: 620px;
+}
+.timeline__item{
+  position: relative;
+  padding-bottom: 32px;
+}
+.timeline__item:last-child{ padding-bottom: 0; }
+.timeline__dot{
+  position:absolute;
+  left: -29px;
+  top: 4px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--line);
+  box-shadow: 0 0 0 3px var(--bg);
+}
+.timeline__item--current .timeline__dot{ background: var(--accent); }
+.timeline__year{
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  color: var(--accent);
+  display:block;
+  margin-bottom: 6px;
+}
+.timeline__text{
+  color: var(--text-muted);
+  margin: 0;
+}
+.timeline__item--current .timeline__text{ color: var(--text); }
+
+/* =========================================================
+   LOGIN standalone (página propia)
+   ========================================================= */
+.login--standalone{ padding-top: 110px; }
+
+/* =========================================================
+   UNIDADES (acordeón + semanas)
+   ========================================================= */
+.units-list{ padding-top: 30px; display:flex; flex-direction:column; gap:16px; }
+
+.unit-accordion{
+  background: var(--bg-panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.unit-accordion__summary{
+  list-style: none;
+  display:flex;
+  align-items:center;
+  gap: 18px;
+  padding: 20px 24px;
+  cursor: pointer;
+}
+.unit-accordion__summary::-webkit-details-marker{ display:none; }
+.unit-accordion__num{
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.unit-accordion__title{
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  flex: 1;
+}
+.unit-accordion__chevron{
+  width: 9px; height: 9px;
+  border-right: 1.5px solid var(--text-muted);
+  border-bottom: 1.5px solid var(--text-muted);
+  transform: rotate(-45deg);
+  transition: transform .2s ease;
+  flex-shrink: 0;
+}
+.unit-accordion[open] .unit-accordion__chevron{ transform: rotate(45deg); }
+
+.unit-accordion__body{
+  padding: 4px 24px 24px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.week-grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  padding-top: 20px;
+}
+.week-card{
+  background: var(--bg-panel-2);
+  border: 1px solid var(--line-soft);
+  border-radius: 8px;
+  padding: 18px;
+}
+.week-card__head{
+  display:flex;
+  justify-content: space-between;
+  align-items:center;
+  margin-bottom: 10px;
+}
+.week-card__label{
+  font-family: var(--font-mono);
+  font-size: .74rem;
+  color: var(--text-muted);
+}
+.week-card__status{
+  font-family: var(--font-mono);
+  font-size: .7rem;
+  color: var(--amber);
+  background: rgba(232,163,61,.12);
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+.week-card__title{
+  font-family: var(--font-display);
+  font-size: .95rem;
+  margin: 0 0 8px;
+}
+.week-card__desc{
+  color: var(--text-muted);
+  font-size: .85rem;
+  margin: 0 0 14px;
+}
+.week-card__upload{
+  display:inline-flex;
+  align-items:center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--accent);
+  border-top: 1px solid var(--line-soft);
+  padding-top: 12px;
+  width: 100%;
+}
+.week-card__upload:hover{ color: var(--text); }
+
+/* =========================================================
    RESPONSIVE
    ========================================================= */
 @media (max-width: 860px){
@@ -417,10 +675,16 @@ section{
   .hero__card{ order: -1; max-width: 260px; margin: 0 auto; }
   .about__body{ grid-template-columns: 1fr; }
   .units__grid{ grid-template-columns: 1fr; }
+  .profile{ grid-template-columns: 1fr; }
+  .record--compact{ margin: 0 auto; }
+  .stack__groups{ grid-template-columns: 1fr; }
+  .projects__grid{ grid-template-columns: 1fr; }
+  .week-grid{ grid-template-columns: 1fr; }
 }
 
 @media (max-width: 700px){
-  .brand-cluster{ gap: 18px; }
+  .brand-cluster{ gap: 14px; }
+  .brand-logo__text{ display:none; }
   .menu{
     position: absolute;
     top: 100%; left: 0; right:0;
