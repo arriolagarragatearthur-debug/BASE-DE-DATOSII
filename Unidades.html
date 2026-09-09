@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unidades · Base de Datos II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand-cluster">
+    <a href="index.html" class="brand-logo" aria-label="Ir al inicio">
+      <svg class="uni-logo" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M20 2 L36 9 V20 C36 29 29 35 20 38 C11 35 4 29 4 20 V9 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M20 12 L28 16 V22 C28 26.5 24.5 30 20 32 C15.5 30 12 26.5 12 22 V16 Z" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.2"/>
+        <line x1="14" y1="18" x2="26" y2="18" stroke="currentColor" stroke-width="1"/>
+        <line x1="14" y1="21" x2="26" y2="21" stroke="currentColor" stroke-width="1"/>
+        <line x1="14" y1="24" x2="22" y2="24" stroke="currentColor" stroke-width="1"/>
+      </svg>
+      <span class="brand-logo__text">UPLA</span>
+    </a>
+    <span class="brand-divider" aria-hidden="true"></span>
+    <a href="index.html" class="brand-mark" aria-label="Base de Datos II">
+      <span class="brand-mark__dot"></span>
+      <span class="brand-mark__code">AR</span>
+    </a>
+    <nav class="menu" aria-label="Navegación principal">
+      <a href="index.html" class="menu__link">Inicio</a>
+      <a href="sobreMi.html" class="menu__link">Sobre mí</a>
+      <a href="unidades.html" class="menu__link is-active">Unidades</a>
+      <a href="login.html" class="menu__link menu__link--auth">Iniciar sesión</a>
+    </nav>
+  </div>
+  <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<main>
+
+  <!-- ===== CABECERA ===== -->
+  <section class="page-head">
+    <p class="page-head__eyebrow">Unidades</p>
+    <h1 class="page-head__title">Cuatro unidades, dieciséis semanas de contenido.</h1>
+    <p class="page-head__desc">Cada semana se habilita desde el panel de administrador. Mientras no se suba material, la semana aparece como pendiente.</p>
+  </section>
+
+  <!-- ===== UNIDADES ===== -->
+  <section class="units-list">
+
+    <details class="unit-accordion" open>
+      <summary class="unit-accordion__summary">
+        <span class="unit-accordion__num">Unidad 01</span>
+        <span class="unit-accordion__title">Fundamentos y modelado ER</span>
+        <span class="unit-accordion__chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="unit-accordion__body">
+        <div class="week-grid">
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 01</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Introducción a las bases de datos</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 02</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Modelo entidad-relación (ER)</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 03</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Cardinalidad y relaciones</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 04</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Del diagrama ER al modelo relacional</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+        </div>
+      </div>
+    </details>
+
+    <details class="unit-accordion">
+      <summary class="unit-accordion__summary">
+        <span class="unit-accordion__num">Unidad 02</span>
+        <span class="unit-accordion__title">Modelo relacional y normalización</span>
+        <span class="unit-accordion__chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="unit-accordion__body">
+        <div class="week-grid">
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 05</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Claves y restricciones de integridad</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 06</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Primera y segunda forma normal</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 07</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Tercera forma normal y FNBC</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 08</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Taller de normalización</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+        </div>
+      </div>
+    </details>
+
+    <details class="unit-accordion">
+      <summary class="unit-accordion__summary">
+        <span class="unit-accordion__num">Unidad 03</span>
+        <span class="unit-accordion__title">SQL avanzado</span>
+        <span class="unit-accordion__chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="unit-accordion__body">
+        <div class="week-grid">
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 09</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Subconsultas y funciones agregadas</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 10</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Vistas e índices</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 11</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Procedimientos almacenados</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 12</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Triggers</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+        </div>
+      </div>
+    </details>
+
+    <details class="unit-accordion">
+      <summary class="unit-accordion__summary">
+        <span class="unit-accordion__num">Unidad 04</span>
+        <span class="unit-accordion__title">Transacciones y administración</span>
+        <span class="unit-accordion__chevron" aria-hidden="true"></span>
+      </summary>
+      <div class="unit-accordion__body">
+        <div class="week-grid">
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 13</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Transacciones ACID</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 14</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Control de concurrencia</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 15</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Respaldo y recuperación</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+          <article class="week-card">
+            <div class="week-card__head">
+              <span class="week-card__label">Semana 16</span>
+              <span class="week-card__status">Pendiente</span>
+            </div>
+            <h3 class="week-card__title">Seguridad del motor de base de datos</h3>
+            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
+            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+          </article>
+        </div>
+      </div>
+    </details>
+
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer__row">
+    <span class="footer__name">Arriola Garragate Anderson Ricardo</span>
+    <span class="footer__sep">·</span>
+    <span class="footer__course">Base de Datos II</span>
+  </div>
+  <div class="footer__row footer__row--muted">
+    <span>Ingeniería de Sistemas y Computación — Universidad Peruana Los Andes, Huancayo</span>
+  </div>
+  <div class="footer__row footer__row--muted">
+    <span>&copy; <span id="year"></span> Todos los derechos reservados.</span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
