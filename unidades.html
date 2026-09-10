@@ -11,6 +11,8 @@
 </head>
 <body>
 
+<div class="vhs-overlay" aria-hidden="true"></div>
+
 <header class="topbar">
   <div class="brand-cluster">
     <a href="index.html" class="brand-logo" aria-label="Ir al inicio">
@@ -29,23 +31,27 @@
       <span class="brand-mark__code">AR</span>
     </a>
     <nav class="menu" aria-label="Navegación principal">
-      <a href="index.html" class="menu__link">Inicio</a>
-      <a href="sobreMi.html" class="menu__link">Sobre mí</a>
-      <a href="unidades.html" class="menu__link is-active">Unidades</a>
-      <a href="login.html" class="menu__link menu__link--auth">Iniciar sesión</a>
+      <a href="index.html" class="menu__link" data-text="Inicio">Inicio</a>
+      <a href="sobreMi.html" class="menu__link" data-text="Sobre mí">Sobre mí</a>
+      <a href="unidades.html" class="menu__link is-active" data-text="Unidades">Unidades</a>
+      <a href="login.html" class="menu__link menu__link--auth" data-text="Iniciar sesión">Iniciar sesión</a>
     </nav>
   </div>
-  <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
-    <span></span><span></span><span></span>
-  </button>
+  <div class="topbar__actions">
+    <button class="ambient-toggle" id="ambientToggle" aria-pressed="false" aria-label="Activar sonido ambiental">🔇</button>
+    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </header>
 
 <main>
 
   <!-- ===== CABECERA ===== -->
-  <section class="page-head">
+  <section class="page-head" style="position:relative;">
+    <div class="fog" aria-hidden="true"><span></span><span></span><span></span></div>
     <p class="page-head__eyebrow">Unidades</p>
-    <h1 class="page-head__title">Cuatro unidades, dieciséis semanas de contenido.</h1>
+    <h1 class="page-head__title flicker-text">Cuatro unidades, dieciséis semanas de contenido.</h1>
     <p class="page-head__desc">Cada semana se habilita desde el panel de administrador. Mientras no se suba material, la semana aparece como pendiente.</p>
   </section>
 
