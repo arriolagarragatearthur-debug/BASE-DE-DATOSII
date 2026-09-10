@@ -11,6 +11,8 @@
 </head>
 <body>
 
+<div class="vhs-overlay" aria-hidden="true"></div>
+
 <header class="topbar">
   <div class="brand-cluster">
     <a href="index.html" class="brand-logo" aria-label="Ir al inicio">
@@ -29,22 +31,25 @@
       <span class="brand-mark__code">AR</span>
     </a>
     <nav class="menu" aria-label="Navegación principal">
-      <a href="index.html" class="menu__link">Inicio</a>
-      <a href="sobreMi.html" class="menu__link">Sobre mí</a>
-      <a href="unidades.html" class="menu__link">Unidades</a>
-      <a href="login.html" class="menu__link menu__link--auth is-active">Iniciar sesión</a>
+      <a href="index.html" class="menu__link" data-text="Inicio">Inicio</a>
+      <a href="sobreMi.html" class="menu__link" data-text="Sobre mí">Sobre mí</a>
+      <a href="unidades.html" class="menu__link" data-text="Unidades">Unidades</a>
+      <a href="login.html" class="menu__link menu__link--auth is-active" data-text="Iniciar sesión">Iniciar sesión</a>
     </nav>
   </div>
-  <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
-    <span></span><span></span><span></span>
-  </button>
+  <div class="topbar__actions">
+    <button class="ambient-toggle" id="ambientToggle" aria-pressed="false" aria-label="Activar sonido ambiental">🔇</button>
+    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </header>
 
 <main>
   <section class="login login--standalone">
     <div class="login__panel">
       <p class="login__eyebrow">Acceso</p>
-      <h2 class="login__title">Iniciar sesión</h2>
+      <h2 class="login__title flicker-text">Iniciar sesión</h2>
       <form class="login__form" id="loginForm">
         <label class="field">
           <span class="field__label">Usuario</span>
