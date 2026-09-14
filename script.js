@@ -181,3 +181,32 @@ if (loginForm) {
     filled ? playFanfare() : playError();
   });
 }
+
+/* =========================================================
+   INSIGNIA DE UNIDADES DESBLOQUEADAS (jugando el minijuego)
+   Solo aplica en unidades.html, donde existen .unit-accordion
+   ========================================================= */
+const unitAccordionsForBadge = document.querySelectorAll('.unit-accordion');
+if (unitAccordionsForBadge.length) {
+  const unlockedUnits = JSON.parse(localStorage.getItem('unlockedUnits') || '[]');
+
+  unitAccordionsForBadge.forEach((acc, i) => {
+    if (unlockedUnits.includes(i + 1)) {
+      const title = acc.querySelector('.unit-accordion__title');
+      if (title && !title.querySelector('.unit-badge')) {
+        const badge = document.createElement('span');
+        badge.className = 'unit-badge';
+        badge.textContent = '🏆 DESBLOQUEADA';
+        title.appendChild(badge);
+      }
+    }
+  });
+
+  const pageHead = document.querySelector('.page-head');
+  if (pageHead) {
+    const progress = document.createElement('p');
+    progress.className = 'game-progress';
+    progress.innerHTML = `🎮 Progreso del juego: ${unlockedUnits.length}/4 unidades desbloqueadas — <a href="index.html#juego">jugar</a>`;
+    pageHead.appendChild(progress);
+  }
+}
