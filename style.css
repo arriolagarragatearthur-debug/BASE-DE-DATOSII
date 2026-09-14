@@ -368,6 +368,8 @@ section{
    ========================================================= */
 .login{ padding-top: 60px; }
 .login__panel{
+  position: relative;
+  z-index: 1;
   max-width: 380px;
   margin: 0 auto;
   background: var(--bg-panel);
@@ -441,12 +443,16 @@ section{
   max-width: 680px;
 }
 .page-head__eyebrow{
+  position: relative;
+  z-index: 1;
   font-family: var(--font-mono);
   color: var(--accent);
   font-size: .82rem;
   margin: 0 0 16px;
 }
 .page-head__title{
+  position: relative;
+  z-index: 1;
   font-family: var(--font-display);
   font-weight: 700;
   font-size: clamp(1.7rem, 3.4vw, 2.4rem);
@@ -454,6 +460,8 @@ section{
   margin: 0 0 16px;
 }
 .page-head__desc{
+  position: relative;
+  z-index: 1;
   color: var(--text-muted);
   margin: 0;
 }
@@ -847,7 +855,6 @@ img, svg{ image-rendering: pixelated; }
   .pixel-cloud, .coin{ animation: none; }
 }
 
-
 /* =========================================================
    MINIJUEGO "SUBE AL SERVIDOR"
    ========================================================= */
@@ -917,30 +924,48 @@ img, svg{ image-rendering: pixelated; }
 .game-progress a{ color: var(--pixel-gold); }
 
 /* =========================================================
-   FONDO GLOBAL ESTILO VIDEOJUEGO
-   Se pinta directamente sobre <body> (sobrescribe el
-   "background: var(--bg)" de arriba): cielo estrellado +
-   cuadrícula pixelada en movimiento. 100% CSS, sin imágenes.
+   FONDO ANIMADO ESTILO VIDEOJUEGO (parallax de montañas,
+   colinas y suelo en movimiento) — 100% CSS, sin imágenes
    ========================================================= */
-body{
-  background-color: #0a0e12;
-  background-image:
-    radial-gradient(circle, rgba(231,237,243,.9) 1px, transparent 1.6px),
-    radial-gradient(circle, rgba(255,210,63,.85) 1.2px, transparent 1.8px),
-    radial-gradient(circle, rgba(79,209,165,.75) 1px, transparent 1.6px),
-    radial-gradient(ellipse 70% 45% at 50% 0%, rgba(79,209,165,.16), transparent 65%),
-    repeating-linear-gradient(0deg, rgba(147,162,176,.18) 0, rgba(147,162,176,.18) 1px, transparent 1px, transparent 42px),
-    repeating-linear-gradient(90deg, rgba(147,162,176,.18) 0, rgba(147,162,176,.18) 1px, transparent 1px, transparent 42px);
-  background-repeat: repeat, repeat, repeat, no-repeat, repeat, repeat;
-  background-size: 70px 70px, 140px 140px, 190px 190px, 100% 70%, 42px 42px, 42px 42px;
-  background-position: 0 0, 40px 20px, 90px 110px, 50% 0%, 0 0, 0 0;
-  background-attachment: fixed;
-  animation: bg-grid-scroll 14s linear infinite;
+.game-bg{
+  position:absolute;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:0;
 }
-@keyframes bg-grid-scroll{
-  from{ background-position: 0 0, 40px 20px, 90px 110px, 50% 0%, 0 0, 0 0; }
-  to{ background-position: 0 0, 40px 20px, 90px 110px, 50% 0%, 42px 42px, 42px 42px; }
+.game-bg__mountains{
+  position:absolute;
+  left:0; right:-140px; bottom:70px; height:150px;
+  background-image:
+    linear-gradient(135deg, transparent 49.5%, #1c2530 50%, #1c2530 50.5%, transparent 51%),
+    linear-gradient(-135deg, transparent 49.5%, #1c2530 50%, #1c2530 50.5%, transparent 51%);
+  background-size: 140px 140px;
+  background-position: 0 bottom;
+  background-repeat: repeat-x;
+  opacity:.9;
+  animation: bg-scroll 70s linear infinite;
+}
+.game-bg__hills{
+  position:absolute;
+  left:0; right:-100px; bottom:34px; height:70px;
+  background-image: radial-gradient(circle at 50% 100%, #263140 36px, transparent 37px);
+  background-size: 90px 90px;
+  background-position: 0 bottom;
+  background-repeat: repeat-x;
+  animation: bg-scroll 34s linear infinite;
+}
+.game-bg__ground{
+  position:absolute;
+  left:0; right:-40px; bottom:0; height:34px;
+  background-image: repeating-linear-gradient(90deg, #263140 0 18px, #1c2530 18px 20px);
+  border-top: 3px solid #000;
+  animation: bg-scroll 9s linear infinite;
+}
+@keyframes bg-scroll{
+  from{ background-position-x: 0; }
+  to{ background-position-x: -140px; }
 }
 @media (prefers-reduced-motion: reduce){
-  body{ animation: none; }
+  .game-bg__mountains, .game-bg__hills, .game-bg__ground{ animation:none; }
 }
