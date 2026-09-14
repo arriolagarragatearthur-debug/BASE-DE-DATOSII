@@ -64,7 +64,7 @@
         <p class="hero__desc">Diseño, normalización y administración de bases de datos relacionales aplicadas a proyectos reales de ingeniería de sistemas.</p>
         <div class="hero__actions">
           <a href="unidades.html" class="btn btn--primary">Ver unidades</a>
-          <a href="sobreMi.html" class="btn btn--ghost">Sobre mí</a>
+          <a href="#juego" class="btn btn--ghost">🎮 Jugar</a>
         </div>
       </div>
       <div class="hero__card" aria-hidden="false">
@@ -96,6 +96,29 @@
     </div>
   </section>
 
+  <!-- ===== MINIJUEGO: sube y desbloquea unidades ===== -->
+  <section id="juego" class="game-section">
+    <div class="section-head" style="margin-left:auto; margin-right:auto; text-align:center;">
+      <h2 class="section-title">🎮 Sube al servidor</h2>
+      <p class="section-sub">Muévete con las flechas, sube por las escaleras y esquiva los bugs. Cada piso que alcances desbloquea una unidad del curso.</p>
+    </div>
+    <div class="game-wrap">
+      <canvas id="gameCanvas" width="640" height="400"></canvas>
+      <div class="game-hud">
+        <span id="gameLives">❤️❤️❤️</span>
+        <button id="gameStart" class="btn btn--primary">▶ Iniciar</button>
+      </div>
+      <div class="game-controls">
+        <button class="game-btn" data-game-key="ArrowLeft" aria-label="Izquierda">◀</button>
+        <div class="game-controls__vertical">
+          <button class="game-btn" data-game-key="ArrowUp" aria-label="Subir">▲</button>
+          <button class="game-btn" data-game-key="ArrowDown" aria-label="Bajar">▼</button>
+        </div>
+        <button class="game-btn" data-game-key="ArrowRight" aria-label="Derecha">▶</button>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="footer">
@@ -113,5 +136,6 @@
 </footer>
 
 <script src="script.js"></script>
+<script src="game.js"></script>
 </body>
 </html>
