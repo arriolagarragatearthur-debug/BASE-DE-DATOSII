@@ -6,12 +6,10 @@
 <title>Sobre mí · Base de Datos II</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div class="vhs-overlay" aria-hidden="true"></div>
 
 <header class="topbar">
   <div class="brand-cluster">
@@ -38,7 +36,10 @@
     </nav>
   </div>
   <div class="topbar__actions">
-    <button class="ambient-toggle" id="ambientToggle" aria-pressed="false" aria-label="Activar sonido ambiental">🔇</button>
+    <div class="hud">
+      <span class="hud__coins"><span class="hud__coin-icon">🪙</span><span id="score">0</span></span>
+      <button class="music-toggle" id="musicToggle" aria-pressed="false" aria-label="Activar música">🔇</button>
+    </div>
     <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
       <span></span><span></span><span></span>
     </button>
@@ -49,9 +50,10 @@
 
   <!-- ===== CABECERA ===== -->
   <section class="page-head" style="position:relative;">
-    <div class="fog" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="pixel-cloud pixel-cloud--1" aria-hidden="true"></div>
+    <button class="coin" style="top:0; right:6%;" aria-label="Moneda">🪙</button>
     <p class="page-head__eyebrow">Sobre mí</p>
-    <h1 class="page-head__title flicker-text">Del modelo entidad-relación al motor en producción.</h1>
+    <h1 class="page-head__title">Del modelo entidad-relación al motor en producción.</h1>
     <p class="page-head__desc">Estudiante de Ingeniería de Sistemas y Computación explorando cómo diseñar, normalizar y administrar bases de datos relacionales para proyectos reales.</p>
   </section>
 
