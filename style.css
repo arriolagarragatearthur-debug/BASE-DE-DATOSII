@@ -179,15 +179,7 @@ section{
 }
 
 .hero__grid-lines{
-  position:absolute;
-  inset:0;
-  background-image:
-    linear-gradient(var(--line-soft) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 70% 60% at 60% 30%, black 40%, transparent 85%);
-  opacity: .6;
-  z-index: 0;
+  display: none;
 }
 
 .hero__content{
@@ -855,6 +847,7 @@ img, svg{ image-rendering: pixelated; }
   .pixel-cloud, .coin{ animation: none; }
 }
 
+
 /* =========================================================
    MINIJUEGO "SUBE AL SERVIDOR"
    ========================================================= */
@@ -923,16 +916,21 @@ img, svg{ image-rendering: pixelated; }
 }
 .game-progress a{ color: var(--pixel-gold); }
 
+.hero,
+.page-head,
+.login--standalone{
+  background-image: linear-gradient(rgba(15,20,25,.55), rgba(15,20,25,.8)), url('assets/game-bg.jpg');
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+}
+
 /* =========================================================
    FONDO ANIMADO ESTILO VIDEOJUEGO (parallax de montañas,
    colinas y suelo en movimiento) — 100% CSS, sin imágenes
    ========================================================= */
 .game-bg{
-  position:absolute;
-  inset:0;
-  overflow:hidden;
-  pointer-events:none;
-  z-index:0;
+  display: none;
 }
 .game-bg__mountains{
   position:absolute;
