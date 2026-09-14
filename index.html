@@ -7,12 +7,10 @@
 <meta name="description" content="Espacio del curso Base de Datos II — Ingeniería de Sistemas, UPLA.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div class="vhs-overlay" aria-hidden="true"></div>
 
 <header class="topbar">
   <div class="brand-cluster">
@@ -39,7 +37,10 @@
     </nav>
   </div>
   <div class="topbar__actions">
-    <button class="ambient-toggle" id="ambientToggle" aria-pressed="false" aria-label="Activar sonido ambiental">🔇</button>
+    <div class="hud">
+      <span class="hud__coins"><span class="hud__coin-icon">🪙</span><span id="score">0</span></span>
+      <button class="music-toggle" id="musicToggle" aria-pressed="false" aria-label="Activar música">🔇</button>
+    </div>
     <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
       <span></span><span></span><span></span>
     </button>
@@ -51,11 +52,14 @@
   <!-- ===== INICIO ===== -->
   <section id="inicio" class="hero">
     <div class="hero__grid-lines" aria-hidden="true"></div>
-    <div class="fog" aria-hidden="true"><span></span><span></span><span></span></div>
+    <div class="pixel-cloud pixel-cloud--1" aria-hidden="true"></div>
+    <div class="pixel-cloud pixel-cloud--2" aria-hidden="true"></div>
+    <button class="coin" style="top:20%; left:8%;" aria-label="Moneda">🪙</button>
+    <button class="coin" style="top:60%; left:88%;" aria-label="Moneda">🪙</button>
     <div class="hero__content">
       <div class="hero__text">
         <p class="hero__eyebrow">Ingeniería de Sistemas y Computación — UPLA</p>
-        <h1 class="hero__title flicker-text">Base de Datos&nbsp;II</h1>
+        <h1 class="hero__title">Base de Datos&nbsp;II</h1>
         <p class="hero__name">Arriola Garragate Anderson Ricardo</p>
         <p class="hero__desc">Diseño, normalización y administración de bases de datos relacionales aplicadas a proyectos reales de ingeniería de sistemas.</p>
         <div class="hero__actions">
