@@ -6,12 +6,10 @@
 <title>Iniciar sesión · Base de Datos II</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Press+Start+2P&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-<div class="vhs-overlay" aria-hidden="true"></div>
 
 <header class="topbar">
   <div class="brand-cluster">
@@ -38,7 +36,10 @@
     </nav>
   </div>
   <div class="topbar__actions">
-    <button class="ambient-toggle" id="ambientToggle" aria-pressed="false" aria-label="Activar sonido ambiental">🔇</button>
+    <div class="hud">
+      <span class="hud__coins"><span class="hud__coin-icon">🪙</span><span id="score">0</span></span>
+      <button class="music-toggle" id="musicToggle" aria-pressed="false" aria-label="Activar música">🔇</button>
+    </div>
     <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">
       <span></span><span></span><span></span>
     </button>
@@ -49,7 +50,7 @@
   <section class="login login--standalone">
     <div class="login__panel">
       <p class="login__eyebrow">Acceso</p>
-      <h2 class="login__title flicker-text">Iniciar sesión</h2>
+      <h2 class="login__title">Iniciar sesión</h2>
       <form class="login__form" id="loginForm">
         <label class="field">
           <span class="field__label">Usuario</span>
