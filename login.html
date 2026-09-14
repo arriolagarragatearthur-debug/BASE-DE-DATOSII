@@ -14,9 +14,15 @@
 <header class="topbar">
   <div class="brand-cluster">
     <a href="index.html" class="brand-logo" aria-label="Ir al inicio">
-  <img src="assets/logo-upla.png" alt="Logo de la UPLA" class="uni-logo">
-  <span class="brand-logo__text">UPLA</span>
-</a>
+      <svg class="uni-logo" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M20 2 L36 9 V20 C36 29 29 35 20 38 C11 35 4 29 4 20 V9 Z" fill="none" stroke="currentColor" stroke-width="2"/>
+        <path d="M20 12 L28 16 V22 C28 26.5 24.5 30 20 32 C15.5 30 12 26.5 12 22 V16 Z" fill="var(--accent-soft)" stroke="currentColor" stroke-width="1.2"/>
+        <line x1="14" y1="18" x2="26" y2="18" stroke="currentColor" stroke-width="1"/>
+        <line x1="14" y1="21" x2="26" y2="21" stroke="currentColor" stroke-width="1"/>
+        <line x1="14" y1="24" x2="22" y2="24" stroke="currentColor" stroke-width="1"/>
+      </svg>
+      <span class="brand-logo__text">UPLA</span>
+    </a>
     <span class="brand-divider" aria-hidden="true"></span>
     <a href="index.html" class="brand-mark" aria-label="Base de Datos II">
       <span class="brand-mark__dot"></span>
@@ -41,7 +47,12 @@
 </header>
 
 <main>
-  <section class="login login--standalone">
+  <section class="login login--standalone" style="position:relative; overflow:hidden;">
+    <div class="game-bg" aria-hidden="true">
+      <span class="game-bg__mountains"></span>
+      <span class="game-bg__hills"></span>
+      <span class="game-bg__ground"></span>
+    </div>
     <div class="login__panel">
       <p class="login__eyebrow">Acceso</p>
       <h2 class="login__title">Iniciar sesión</h2>
