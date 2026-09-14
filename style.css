@@ -707,126 +707,142 @@ section{
 }
 
 /* =========================================================
-   AMBIENTE INTERACTIVO — niebla, flicker, VHS, glitch
+   TEMA RETRO 8-BIT (estilo videojuego plataformero)
    ========================================================= */
 :root{
-  --st-red: #ff2e4d;
-  --st-red-dim: #b81c33;
-  --st-red-glow: rgba(255,46,77,.5);
+  --pixel-gold:  #ffd23f;
+  --pixel-red:   #ff4d4d;
+  --pixel-blue:  #4d7fff;
+  --font-pixel:  'Press Start 2P', cursive;
 }
 
-/* --- overlay de líneas VHS + ruido, cubre toda la pantalla --- */
-.vhs-overlay{
-  position: fixed;
-  inset: 0;
-  z-index: 200;
-  pointer-events: none;
-  background-image: repeating-linear-gradient(
-    to bottom,
-    rgba(255,255,255,.035) 0px,
-    rgba(255,255,255,.035) 1px,
-    transparent 1px,
-    transparent 3px
-  );
-  mix-blend-mode: overlay;
-  opacity: .5;
-}
-.vhs-overlay::after{
-  content:"";
-  position:absolute; inset:0;
-  background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.55) 100%);
-}
+/* pixelar cualquier imagen/escala del sitio */
+img, svg{ image-rendering: pixelated; }
 
-/* --- niebla roja flotante --- */
-.fog{
-  position:absolute;
-  inset: 0;
-  overflow:hidden;
-  pointer-events:none;
-  z-index: 0;
+/* --- tipografía pixel para títulos, etiquetas y botones --- */
+.hero__title,
+.page-head__title,
+.section-title,
+.login__title,
+.brand-mark__code,
+.unit-accordion__num,
+.unit-accordion__title,
+.week-card__label,
+.btn{
+  font-family: var(--font-pixel);
+  letter-spacing: 0;
 }
-.fog span{
-  position:absolute;
-  bottom: -40%;
-  width: 60%;
-  padding-top: 60%;
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--st-red-glow) 0%, transparent 70%);
-  filter: blur(30px);
-  opacity: .35;
-  animation: fog-drift 18s ease-in-out infinite;
-}
-.fog span:nth-child(1){ left: -10%; animation-duration: 22s; }
-.fog span:nth-child(2){ left: 30%; animation-duration: 26s; animation-delay: -6s; opacity:.25; }
-.fog span:nth-child(3){ left: 60%; animation-duration: 20s; animation-delay: -12s; }
+.hero__title{ font-size: clamp(1.4rem, 3.6vw, 2.2rem); line-height: 1.5; }
+.page-head__title{ font-size: clamp(1.05rem, 2.4vw, 1.5rem); line-height: 1.7; }
+.section-title{ font-size: clamp(1rem, 1.8vw, 1.3rem); line-height: 1.6; }
+.login__title{ font-size: 1.1rem; line-height: 1.6; }
 
-@keyframes fog-drift{
-  0%,100%{ transform: translateX(0) translateY(0); }
-  50%{ transform: translateX(6%) translateY(-4%); }
+/* --- botones estilo "START" de NES: bordes duros + sombra escalonada --- */
+.btn{
+  border-radius: 0;
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0 #000;
+  font-size: .68rem;
+  padding: 14px 20px;
+  transition: transform .08s ease, box-shadow .08s ease;
 }
+.btn:hover{ transform: translate(2px, 2px); box-shadow: 2px 2px 0 #000; }
+.btn--primary:active{ animation: none; transform: translate(4px, 4px); box-shadow: 0 0 0 #000; }
+.btn--ghost{ border-color: var(--accent); }
 
-/* --- texto con parpadeo de neón --- */
-.flicker-init{
-  text-shadow: 0 0 6px var(--st-red-glow), 0 0 18px var(--st-red-glow);
-  transition: opacity .05s linear, text-shadow .05s linear;
+/* --- tarjetas con borde de bloque pixelado --- */
+.record,
+.project-card,
+.unit-accordion,
+.week-card,
+.login__panel,
+.skills__item,
+.tag{
+  border-radius: 0 !important;
+  border-width: 3px !important;
 }
-.flicker-glitch{
-  opacity: .35;
-  text-shadow: 2px 0 var(--st-red), -2px 0 var(--accent), 0 0 22px var(--st-red-glow);
-}
+.record{ box-shadow: 6px 6px 0 rgba(0,0,0,.5); }
+.project-card:hover{ box-shadow: 4px 4px 0 var(--accent-dim); }
 
-/* --- efecto glitch al pasar el mouse por enlaces del menú --- */
-.menu__link{ position: relative; }
-.menu__link::before{
-  content: attr(data-text);
-  position: absolute;
-  left: 0; top: 0;
-  width: 100%;
-  color: var(--st-red);
-  clip-path: inset(0 0 100% 0);
-  opacity: 0;
-  transition: none;
-}
-.menu__link:hover::before{
-  opacity: .7;
-  clip-path: inset(0 0 60% 0);
-  transform: translate(-1px, -1px);
-}
-
-/* --- botón toggle de sonido ambiental --- */
-.topbar__actions{
+/* --- HUD de puntaje y música, en el topbar --- */
+.hud{
   display:flex;
   align-items:center;
-  gap: 10px;
+  gap: 14px;
+  font-family: var(--font-pixel);
+  font-size: .68rem;
+  color: var(--pixel-gold);
 }
-.ambient-toggle{
+.hud__coins{ display:flex; align-items:center; gap:6px; }
+.hud__coin-icon{ font-size: 1rem; }
+.music-toggle{
   background: transparent;
-  border: 1px solid var(--line);
+  border: 2px solid var(--line);
   color: var(--text-muted);
-  border-radius: 6px;
+  border-radius: 0;
   width: 34px; height: 34px;
   font-size: .95rem;
   cursor: pointer;
   transition: border-color .15s ease, color .15s ease;
 }
-.ambient-toggle:hover{ border-color: var(--st-red); color: var(--st-red); }
-.ambient-toggle[aria-pressed="true"]{
-  border-color: var(--st-red);
-  color: var(--st-red);
-  box-shadow: 0 0 10px var(--st-red-glow);
+.music-toggle:hover{ border-color: var(--pixel-gold); color: var(--pixel-gold); }
+.music-toggle[aria-pressed="true"]{
+  border-color: var(--pixel-gold);
+  color: var(--pixel-gold);
+  box-shadow: 0 0 0 2px rgba(255,210,63,.25);
 }
 
-/* --- pequeño temblor de pantalla al hacer click en botones primarios --- */
-@keyframes screen-shake{
-  0%,100%{ transform: translate(0,0); }
-  20%{ transform: translate(-1px, 1px); }
-  40%{ transform: translate(1px, -1px); }
-  60%{ transform: translate(-1px, -1px); }
-  80%{ transform: translate(1px, 1px); }
+.topbar__actions{
+  display:flex;
+  align-items:center;
+  gap: 14px;
 }
-.btn--primary:active{ animation: screen-shake .18s linear; }
 
+/* --- nubes pixeladas decorativas --- */
+.pixel-cloud{
+  position:absolute;
+  width: 16px; height:16px;
+  background: #fff;
+  opacity:.85;
+  box-shadow:
+    16px 0 0 #fff, 32px 0 0 #fff,
+    -16px 16px 0 #fff, 0 16px 0 #fff, 16px 16px 0 #fff, 32px 16px 0 #fff, 48px 16px 0 #fff,
+    0 32px 0 #fff, 16px 32px 0 #fff, 32px 32px 0 #fff;
+  pointer-events:none;
+  animation: cloud-drift 30s linear infinite;
+}
+.pixel-cloud--2{ top: 18%; left: 55%; transform: scale(.7); animation-duration: 40s; animation-delay: -10s; opacity:.6; }
+.pixel-cloud--1{ top: 10%; left: 5%; }
+
+@keyframes cloud-drift{
+  0%{ transform: translateX(0); }
+  100%{ transform: translateX(40px); }
+}
+
+/* --- monedas clicables --- */
+.coin{
+  position:absolute;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  filter: drop-shadow(2px 2px 0 rgba(0,0,0,.4));
+  animation: coin-bounce 1.6s ease-in-out infinite;
+  z-index: 2;
+}
+.coin:nth-of-type(2){ animation-delay: .3s; }
+.coin:nth-of-type(3){ animation-delay: .6s; }
+.coin.is-collected{
+  animation: none;
+  transform: scale(0) translateY(-20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform .3s ease, opacity .3s ease;
+}
+@keyframes coin-bounce{
+  0%,100%{ transform: translateY(0); }
+  50%{ transform: translateY(-8px); }
+}
 @media (prefers-reduced-motion: reduce){
-  .fog span{ animation: none; }
-  .flicker-init{ text-shadow: none; }
+  .pixel-cloud, .coin{ animation: none; }
 }
