@@ -30,9 +30,9 @@ if (loginForm) {
 }
 
 /* =========================================================
-   AMBIENTE INTERACTIVO — niebla, flicker, VHS y sonido
+   TEMA RETRO 8-BIT — chiptune, monedas y sonido de salto
    (todo el sonido es sintetizado con Web Audio API,
-   no usa clips ni archivos de audio con derechos de autor)
+   no usa clips ni música de ningún videojuego con derechos de autor)
    ========================================================= */
 
 let audioCtx = null;
@@ -44,122 +44,140 @@ function getAudioCtx() {
   return audioCtx;
 }
 
-function playTone(freq, duration, type = 'sine', gainValue = 0.05) {
+function playTone(freq, duration, type = 'square', gainValue = 0.05, startTime = 0) {
   const ctx = getAudioCtx();
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
   osc.type = type;
-  osc.frequency.setValueAtTime(freq, ctx.currentTime);
-  gain.gain.setValueAtTime(gainValue, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+  osc.frequency.setValueAtTime(freq, ctx.currentTime + startTime);
+  gain.gain.setValueAtTime(gainValue, ctx.currentTime + startTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startTime + duration);
+  osc.connect(gain).connect(ctx.destination);
+  osc.start(ctx.currentTime + startTime);
+  osc.stop(ctx.currentTime + startTime + duration);
+}
+
+// blip corto al pasar por el menú
+function playBlip() { playTone(660, 0.06, 'square', 0.035); }
+
+// sonido de "salto" al hacer click en botones (barrido de frecuencia hacia arriba)
+function playJump() {
+  const ctx = getAudioCtx();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = 'square';
+  osc.frequency.setValueAtTime(220, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(660, ctx.currentTime + 0.15);
+  gain.gain.setValueAtTime(0.05, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.18);
   osc.connect(gain).connect(ctx.destination);
   osc.start();
-  osc.stop(ctx.currentTime + duration);
+  osc.stop(ctx.currentTime + 0.18);
 }
 
-function playBlip() { playTone(740, 0.08, 'square', 0.03); }
-function playThud() { playTone(90, 0.25, 'sine', 0.12); }
-function playCrackle() {
+// sonido de "moneda" (dos tonos rápidos ascendentes)
+function playCoin() {
+  playTone(988, 0.09, 'square', 0.05, 0);
+  playTone(1319, 0.15, 'square', 0.05, 0.08);
+}
+
+// pequeña fanfarria al abrir una unidad o iniciar sesión con éxito
+function playFanfare() {
+  [523, 659, 784, 1047].forEach((f, i) => playTone(f, 0.12, 'square', 0.04, i * 0.09));
+}
+function playError() { playTone(140, 0.3, 'sawtooth', 0.05); }
+
+// --- chiptune de fondo: pequeño arpegio en bucle, original ---
+let musicNodes = null;
+let musicTimer = null;
+function startMusic() {
   const ctx = getAudioCtx();
-  const bufferSize = ctx.sampleRate * 0.15;
-  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-  const data = buffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
-  const noise = ctx.createBufferSource();
-  noise.buffer = buffer;
+  const notes = [392, 523, 659, 523, 392, 523, 784, 659]; // melodía original, en bucle
+  let step = 0;
   const gain = ctx.createGain();
-  gain.gain.setValueAtTime(0.08, ctx.currentTime);
-  noise.connect(gain).connect(ctx.destination);
-  noise.start();
+  gain.gain.value = 0.028;
+  gain.connect(ctx.destination);
+
+  function playStep() {
+    const osc = ctx.createOscillator();
+    osc.type = 'square';
+    osc.frequency.value = notes[step % notes.length];
+    const noteGain = ctx.createGain();
+    noteGain.gain.setValueAtTime(0.028, ctx.currentTime);
+    noteGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.22);
+    osc.connect(noteGain).connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.22);
+    step++;
+  }
+  playStep();
+  musicTimer = setInterval(playStep, 240);
+  musicNodes = { gain };
 }
-function playConfirm() { playTone(523, 0.12, 'sine', 0.05); setTimeout(() => playTone(784, 0.15, 'sine', 0.05), 90); }
-function playError() { playTone(160, 0.3, 'sawtooth', 0.06); }
-
-let ambientNodes = null;
-function startAmbient() {
-  const ctx = getAudioCtx();
-  const osc1 = ctx.createOscillator();
-  const osc2 = ctx.createOscillator();
-  const lfo = ctx.createOscillator();
-  const lfoGain = ctx.createGain();
-  const masterGain = ctx.createGain();
-
-  osc1.type = 'sine';
-  osc1.frequency.value = 55;
-  osc2.type = 'sine';
-  osc2.frequency.value = 55.6;
-  lfo.frequency.value = 0.15;
-  lfoGain.gain.value = 4;
-  masterGain.gain.value = 0.0001;
-
-  lfo.connect(lfoGain).connect(osc2.frequency);
-  osc1.connect(masterGain);
-  osc2.connect(masterGain);
-  masterGain.connect(ctx.destination);
-
-  osc1.start(); osc2.start(); lfo.start();
-  masterGain.gain.linearRampToValueAtTime(0.045, ctx.currentTime + 1.2);
-
-  ambientNodes = { osc1, osc2, lfo, masterGain };
-}
-function stopAmbient() {
-  if (!ambientNodes) return;
-  const ctx = getAudioCtx();
-  ambientNodes.masterGain.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.6);
-  setTimeout(() => {
-    ambientNodes.osc1.stop(); ambientNodes.osc2.stop(); ambientNodes.lfo.stop();
-    ambientNodes = null;
-  }, 700);
+function stopMusic() {
+  if (musicTimer) clearInterval(musicTimer);
+  musicTimer = null;
+  musicNodes = null;
 }
 
-const ambientToggle = document.getElementById('ambientToggle');
-if (ambientToggle) {
-  const isOn = () => localStorage.getItem('ambientSound') === 'on';
+// --- toggle de música, persistente entre páginas ---
+const musicToggle = document.getElementById('musicToggle');
+if (musicToggle) {
+  const isOn = () => localStorage.getItem('chiptuneMusic') === 'on';
   const render = () => {
-    ambientToggle.textContent = isOn() ? '🔊' : '🔇';
-    ambientToggle.setAttribute('aria-pressed', isOn());
+    musicToggle.textContent = isOn() ? '🎵' : '🔇';
+    musicToggle.setAttribute('aria-pressed', isOn());
   };
   render();
   if (isOn()) {
     document.addEventListener('click', function startOnce() {
-      startAmbient();
+      startMusic();
       document.removeEventListener('click', startOnce);
     }, { once: true });
   }
-  ambientToggle.addEventListener('click', () => {
+  musicToggle.addEventListener('click', () => {
     if (isOn()) {
-      localStorage.setItem('ambientSound', 'off');
-      stopAmbient();
+      localStorage.setItem('chiptuneMusic', 'off');
+      stopMusic();
     } else {
-      localStorage.setItem('ambientSound', 'on');
-      startAmbient();
+      localStorage.setItem('chiptuneMusic', 'on');
+      startMusic();
     }
     render();
   });
 }
 
+// --- puntaje de monedas, persistente entre páginas ---
+const scoreEl = document.getElementById('score');
+function getScore() { return parseInt(localStorage.getItem('coinScore') || '0', 10); }
+function setScore(v) {
+  localStorage.setItem('coinScore', v);
+  if (scoreEl) scoreEl.textContent = v;
+}
+if (scoreEl) setScore(getScore());
+
+document.querySelectorAll('.coin').forEach(coin => {
+  coin.addEventListener('click', () => {
+    if (coin.classList.contains('is-collected')) return;
+    coin.classList.add('is-collected');
+    playCoin();
+    setScore(getScore() + 10);
+  });
+});
+
+// --- enganchar sonidos a la interfaz existente ---
 document.querySelectorAll('.menu__link').forEach(link => {
   link.addEventListener('mouseenter', playBlip);
 });
 document.querySelectorAll('.btn').forEach(btn => {
-  btn.addEventListener('click', playThud);
+  btn.addEventListener('click', playJump);
 });
 document.querySelectorAll('.unit-accordion').forEach(acc => {
-  acc.querySelector('.unit-accordion__summary').addEventListener('click', playCrackle);
+  acc.querySelector('.unit-accordion__summary').addEventListener('click', playFanfare);
 });
 if (loginForm) {
   loginForm.addEventListener('submit', () => {
     const filled = loginForm.usuario.value && loginForm.clave.value;
-    filled ? playConfirm() : playError();
+    filled ? playFanfare() : playError();
   });
 }
-
-document.querySelectorAll('.flicker-text').forEach(el => {
-  el.classList.add('flicker-init');
-  setInterval(() => {
-    if (Math.random() < 0.12) {
-      el.classList.add('flicker-glitch');
-      setTimeout(() => el.classList.remove('flicker-glitch'), 160);
-    }
-  }, 1400);
-});
