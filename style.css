@@ -918,79 +918,29 @@ img, svg{ image-rendering: pixelated; }
 
 /* =========================================================
    FONDO GLOBAL ESTILO VIDEOJUEGO
-   Capa fija detrás de todo el sitio: cuadrícula pixelada en
-   movimiento + estrellas parpadeantes, 100% CSS, sin imágenes
-   ni assets externos.
+   Se pinta directamente sobre <body> (sobrescribe el
+   "background: var(--bg)" de arriba): cielo estrellado +
+   cuadrícula pixelada en movimiento. 100% CSS, sin imágenes.
    ========================================================= */
 body{
-  position: relative;
+  background-color: #0a0e12;
+  background-image:
+    radial-gradient(circle, rgba(231,237,243,.9) 1px, transparent 1.6px),
+    radial-gradient(circle, rgba(255,210,63,.85) 1.2px, transparent 1.8px),
+    radial-gradient(circle, rgba(79,209,165,.75) 1px, transparent 1.6px),
+    radial-gradient(ellipse 70% 45% at 50% 0%, rgba(79,209,165,.16), transparent 65%),
+    repeating-linear-gradient(0deg, rgba(147,162,176,.18) 0, rgba(147,162,176,.18) 1px, transparent 1px, transparent 42px),
+    repeating-linear-gradient(90deg, rgba(147,162,176,.18) 0, rgba(147,162,176,.18) 1px, transparent 1px, transparent 42px);
+  background-repeat: repeat, repeat, repeat, no-repeat, repeat, repeat;
+  background-size: 70px 70px, 140px 140px, 190px 190px, 100% 70%, 42px 42px, 42px 42px;
+  background-position: 0 0, 40px 20px, 90px 110px, 50% 0%, 0 0, 0 0;
+  background-attachment: fixed;
+  animation: bg-grid-scroll 14s linear infinite;
 }
-
-/* capa 1: degradado base + cuadrícula pixelada desplazándose */
-body::before{
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -3;
-  background:
-    radial-gradient(ellipse 80% 55% at 50% -10%, rgba(79,209,165,.08), transparent 60%),
-    linear-gradient(180deg, #0d1216 0%, #0f1419 45%, #0a0e12 100%),
-    linear-gradient(var(--line-soft) 1px, transparent 1px),
-    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
-  background-size: auto, auto, 42px 42px, 42px 42px;
-  background-position: 0 0, 0 0, 0 0, 0 0;
-  opacity: .9;
-  animation: bg-grid-scroll 16s linear infinite;
-}
-
-/* capa 2: estrellas pixeladas parpadeantes */
-body::after{
-  content: "";
-  position: fixed;
-  top: 0; left: 0;
-  width: 2px; height: 2px;
-  z-index: -2;
-  pointer-events: none;
-  background: transparent;
-  box-shadow:
-    6vw 10vh 0 1px rgba(231,237,243,.55),
-    14vw 32vh 0 1px rgba(255,210,63,.5),
-    22vw 6vh 0 1px rgba(231,237,243,.4),
-    31vw 48vh 0 1px rgba(231,237,243,.6),
-    38vw 18vh 0 1px rgba(79,209,165,.5),
-    45vw 60vh 0 1px rgba(231,237,243,.45),
-    52vw 4vh 0 1px rgba(231,237,243,.55),
-    59vw 36vh 0 1px rgba(255,210,63,.4),
-    66vw 22vh 0 1px rgba(231,237,243,.5),
-    73vw 55vh 0 1px rgba(231,237,243,.4),
-    80vw 12vh 0 1px rgba(79,209,165,.45),
-    87vw 42vh 0 1px rgba(231,237,243,.55),
-    94vw 28vh 0 1px rgba(231,237,243,.4),
-    3vw 70vh 0 1px rgba(231,237,243,.5),
-    18vw 82vh 0 1px rgba(255,210,63,.45),
-    35vw 90vh 0 1px rgba(231,237,243,.4),
-    50vw 78vh 0 1px rgba(231,237,243,.55),
-    64vw 88vh 0 1px rgba(79,209,165,.4),
-    78vw 72vh 0 1px rgba(231,237,243,.5),
-    91vw 95vh 0 1px rgba(231,237,243,.45);
-  animation: bg-stars-twinkle 3.2s ease-in-out infinite;
-}
-
 @keyframes bg-grid-scroll{
-  0%{ background-position: 0 0, 0 0, 0 0, 0 0; }
-  100%{ background-position: 0 0, 0 0, 42px 42px, 42px 42px; }
+  from{ background-position: 0 0, 40px 20px, 90px 110px, 50% 0%, 0 0, 0 0; }
+  to{ background-position: 0 0, 40px 20px, 90px 110px, 50% 0%, 42px 42px, 42px 42px; }
 }
-@keyframes bg-stars-twinkle{
-  0%, 100%{ opacity: .5; }
-  50%{ opacity: 1; }
-}
-
 @media (prefers-reduced-motion: reduce){
-  body::before, body::after{ animation: none; }
-}
-
-/* asegura que el contenido quede siempre por encima del fondo fijo */
-.topbar, main, .footer{
-  position: relative;
-  z-index: 1;
+  body{ animation: none; }
 }
