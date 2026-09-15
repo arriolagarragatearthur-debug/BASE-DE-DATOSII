@@ -58,12 +58,8 @@
       <h2 class="login__title">Iniciar sesión</h2>
       <form class="login__form" id="loginForm">
         <label class="field">
-          <span class="field__label">Usuario</span>
-          <input class="field__input" type="text" name="usuario" placeholder="usuario" autocomplete="username" required>
-        </label>
-        <label class="field">
-          <span class="field__label">Contraseña</span>
-          <input class="field__input" type="password" name="clave" placeholder="••••••••" autocomplete="current-password" required>
+          <span class="field__label">Token de acceso (GitHub)</span>
+          <input class="field__input" type="password" name="token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" required>
         </label>
         <button type="submit" class="btn btn--primary btn--block">Entrar</button>
         <p class="login__note" id="loginNote" role="status"></p>
@@ -87,5 +83,24 @@
 </footer>
 
 <script src="script.js"></script>
+<script src="github-upload.js"></script>
+<script>
+  const ghLoginForm = document.getElementById('loginForm');
+  const ghLoginNote = document.getElementById('loginNote');
+
+  ghLoginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const token = ghLoginForm.token.value.trim();
+    ghLoginNote.textContent = 'Verificando token...';
+    const ok = await window.ghMaterials.ghVerifyToken(token);
+    if (ok) {
+      window.ghMaterials.ghSetToken(token);
+      ghLoginNote.textContent = '¡Listo! Redirigiendo a Unidades...';
+      window.location.href = 'unidades.html';
+    } else {
+      ghLoginNote.textContent = 'Token inválido, expirado o sin permisos sobre el repositorio.';
+    }
+  });
+</script>
 </body>
 </html>
