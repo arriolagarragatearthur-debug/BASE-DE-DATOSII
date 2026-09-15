@@ -58,6 +58,14 @@
       <h2 class="login__title">Iniciar sesión</h2>
       <form class="login__form" id="loginForm">
         <label class="field">
+          <span class="field__label">Usuario</span>
+          <input class="field__input" type="email" name="usuario" placeholder="admin@ms.upla.edu.pe" autocomplete="username" required>
+        </label>
+        <label class="field">
+          <span class="field__label">Contraseña</span>
+          <input class="field__input" type="password" name="password" placeholder="••••••••" autocomplete="current-password" required>
+        </label>
+        <label class="field">
           <span class="field__label">Token de acceso (GitHub)</span>
           <input class="field__input" type="password" name="token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off" required>
         </label>
@@ -85,20 +93,36 @@
 <script src="script.js"></script>
 <script src="github-upload.js"></script>
 <script>
+  // ⚠️ Credenciales de acceso al panel de administrador.
+  // Esto es una validación en el navegador (visible en el código fuente),
+  // no una autenticación real de servidor. Sirve para un portafolio
+  // académico, pero cualquiera que revise el archivo login.html puede
+  // ver estos valores.
+  const ADMIN_USER = 'admin@ms.upla.edu.pe';
+  const ADMIN_PASS = 'admin123';
+
   const ghLoginForm = document.getElementById('loginForm');
   const ghLoginNote = document.getElementById('loginNote');
 
   ghLoginForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    const usuario = ghLoginForm.usuario.value.trim();
+    const password = ghLoginForm.password.value;
     const token = ghLoginForm.token.value.trim();
-    ghLoginNote.textContent = 'Verificando token...';
+
+    if (usuario !== ADMIN_USER || password !== ADMIN_PASS) {
+      ghLoginNote.textContent = 'Usuario o contraseña incorrectos.';
+      return;
+    }
+
+    ghLoginNote.textContent = 'Verificando token de GitHub...';
     const ok = await window.ghMaterials.ghVerifyToken(token);
     if (ok) {
       window.ghMaterials.ghSetToken(token);
       ghLoginNote.textContent = '¡Listo! Redirigiendo a Unidades...';
       window.location.href = 'unidades.html';
     } else {
-      ghLoginNote.textContent = 'Token inválido, expirado o sin permisos sobre el repositorio.';
+      ghLoginNote.textContent = 'Token de GitHub inválido, expirado o sin permisos sobre el repositorio.';
     }
   });
 </script>
