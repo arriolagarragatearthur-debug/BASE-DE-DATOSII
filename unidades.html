@@ -32,7 +32,7 @@
       <a href="index.html" class="menu__link" data-text="Inicio">Inicio</a>
       <a href="sobreMi.html" class="menu__link" data-text="Sobre mí">Sobre mí</a>
       <a href="unidades.html" class="menu__link is-active" data-text="Unidades">Unidades</a>
-      <a href="login.html" class="menu__link menu__link--auth" data-text="Iniciar sesión">Iniciar sesión</a>
+      <a href="login.html" id="loginNavLink" class="menu__link menu__link--auth" data-text="Iniciar sesión">Iniciar sesión</a>
     </nav>
   </div>
   <div class="topbar__actions">
@@ -59,7 +59,8 @@
     <button class="coin" style="top:0; right:6%;" aria-label="Moneda">🪙</button>
     <p class="page-head__eyebrow">Unidades</p>
     <h1 class="page-head__title">Cuatro unidades, dieciséis semanas de contenido.</h1>
-    <p class="page-head__desc">Cada semana se habilita desde el panel de administrador. Mientras no se suba material, la semana aparece como pendiente.</p>
+    <p class="page-head__desc">El material de cada semana está disponible para todos (verlo y descargarlo no requiere iniciar sesión). Solo el administrador puede subir o reemplazar archivos.</p>
+    <p class="page-head__desc" id="adminStatus" style="display:none;"></p>
   </section>
 
   <!-- ===== UNIDADES ===== -->
@@ -74,40 +75,24 @@
       <div class="unit-accordion__body">
         <div class="week-grid">
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 01</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 01</span></div>
             <h3 class="week-card__title">Introducción a las bases de datos</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u1s1"><p class="week-card__desc">Cargando…</p></div>
           </article>
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 02</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 02</span></div>
             <h3 class="week-card__title">Modelo entidad-relación (ER)</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u1s2"><p class="week-card__desc">Cargando…</p></div>
           </article>
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 03</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 03</span></div>
             <h3 class="week-card__title">Cardinalidad y relaciones</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u1s3"><p class="week-card__desc">Cargando…</p></div>
           </article>
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 04</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 04</span></div>
             <h3 class="week-card__title">Del diagrama ER al modelo relacional</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u1s4"><p class="week-card__desc">Cargando…</p></div>
           </article>
         </div>
       </div>
@@ -122,40 +107,24 @@
       <div class="unit-accordion__body">
         <div class="week-grid">
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 05</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 05</span></div>
             <h3 class="week-card__title">Claves y restricciones de integridad</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u2s1"><p class="week-card__desc">Cargando…</p></div>
           </article>
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 06</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 06</span></div>
             <h3 class="week-card__title">Primera y segunda forma normal</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u2s2"><p class="week-card__desc">Cargando…</p></div>
           </article>
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 07</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 07</span></div>
             <h3 class="week-card__title">Tercera forma normal y FNBC</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u2s3"><p class="week-card__desc">Cargando…</p></div>
           </article>
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 08</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 08</span></div>
             <h3 class="week-card__title">Taller de normalización</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u2s4"><p class="week-card__desc">Cargando…</p></div>
           </article>
         </div>
       </div>
@@ -170,40 +139,24 @@
       <div class="unit-accordion__body">
         <div class="week-grid">
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 09</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 09</span></div>
             <h3 class="week-card__title">Subconsultas y funciones agregadas</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u3s1"><p class="week-card__desc">Cargando…</p></div>
           </article>
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 10</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 10</span></div>
             <h3 class="week-card__title">Vistas e índices</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u3s2"><p class="week-card__desc">Cargando…</p></div>
           </article>
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 11</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 11</span></div>
             <h3 class="week-card__title">Procedimientos almacenados</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u3s3"><p class="week-card__desc">Cargando…</p></div>
           </article>
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 12</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 12</span></div>
             <h3 class="week-card__title">Triggers</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u3s4"><p class="week-card__desc">Cargando…</p></div>
           </article>
         </div>
       </div>
@@ -218,40 +171,24 @@
       <div class="unit-accordion__body">
         <div class="week-grid">
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 13</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 13</span></div>
             <h3 class="week-card__title">Transacciones ACID</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u4s1"><p class="week-card__desc">Cargando…</p></div>
           </article>
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 14</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 14</span></div>
             <h3 class="week-card__title">Control de concurrencia</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u4s2"><p class="week-card__desc">Cargando…</p></div>
           </article>
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 15</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 15</span></div>
             <h3 class="week-card__title">Respaldo y recuperación</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u4s3"><p class="week-card__desc">Cargando…</p></div>
           </article>
           <article class="week-card">
-            <div class="week-card__head">
-              <span class="week-card__label">Semana 16</span>
-              <span class="week-card__status">Pendiente</span>
-            </div>
+            <div class="week-card__head"><span class="week-card__label">Semana 16</span></div>
             <h3 class="week-card__title">Seguridad del motor de base de datos</h3>
-            <p class="week-card__desc">Aún no se subió material para esta semana.</p>
-            <a href="login.html" class="week-card__upload">🔒 Subir material (admin)</a>
+            <div class="week-file" data-week="u4s4"><p class="week-card__desc">Cargando…</p></div>
           </article>
         </div>
       </div>
@@ -276,5 +213,7 @@
 </footer>
 
 <script src="script.js"></script>
+<script src="github-upload.js"></script>
+<script src="materials-render.js"></script>
 </body>
 </html>
