@@ -7,8 +7,8 @@
    ========================================================= */
 
 // ⚠️ CAMBIA ESTOS DOS VALORES POR LOS TUYOS
-const GITHUB_OWNER  = 'TU_USUARIO_DE_GITHUB';
-const GITHUB_REPO   = 'TU_REPOSITORIO';
+const GITHUB_OWNER  = 'arriolagarragatearthur-debug';
+const GITHUB_REPO   = 'BASE-DE-DATOSII';
 const GITHUB_BRANCH = 'main';
 
 function ghGetToken() {
