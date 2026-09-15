@@ -22,13 +22,6 @@ document.querySelectorAll('.menu__link').forEach(link => {
 const loginForm = document.getElementById('loginForm');
 const loginNote = document.getElementById('loginNote');
 
-if (loginForm) {
-  loginForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    loginNote.textContent = 'Este formulario es una demostración: aún no está conectado a un servidor.';
-  });
-}
-
 /* =========================================================
    TEMA RETRO 8-BIT — chiptune, monedas y sonido de salto
    (todo el sonido es sintetizado con Web Audio API,
@@ -177,8 +170,7 @@ document.querySelectorAll('.unit-accordion').forEach(acc => {
 });
 if (loginForm) {
   loginForm.addEventListener('submit', () => {
-    const filled = loginForm.usuario.value && loginForm.clave.value;
-    filled ? playFanfare() : playError();
+    if (typeof playJump === 'function') playJump();
   });
 }
 
