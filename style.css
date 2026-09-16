@@ -432,6 +432,14 @@ section{
 .page-head{
   padding-top: 72px;
   padding-bottom: 20px;
+  max-width: none;
+  width: 100%;
+  padding-left: clamp(16px, 5vw, 32px);
+  padding-right: clamp(16px, 5vw, 32px);
+}
+.page-head__eyebrow,
+.page-head__title,
+.page-head__desc{
   max-width: 680px;
 }
 .page-head__eyebrow{
@@ -575,7 +583,7 @@ section{
   display:flex;
   flex-direction:column;
   gap:16px;
-  max-width: none;   /* antes heredaba max-width:1120px de "section" y quedaba centrado con márgenes grandes */
+  max-width: none;
   width: 100%;
   padding-left: clamp(12px, 2vw, 28px);
   padding-right: clamp(12px, 2vw, 28px);
@@ -991,7 +999,7 @@ img, svg{ image-rendering: pixelated; }
   font-family: var(--font-mono);
   font-size:.82rem;
   color: var(--accent);
-  overflow-wrap: anywhere;   /* antes: nowrap + ellipsis cortaba nombres largos como "Manual_Instalacion_SQLServer2025.pdf" */
+  overflow-wrap: anywhere;
   white-space: normal;
   flex:1;
   min-width: 0;
