@@ -11,6 +11,17 @@ const GITHUB_OWNER  = 'arriolagarragatearthur-debug';
 const GITHUB_REPO   = 'BASE-DE-DATOSII';
 const GITHUB_BRANCH = 'main';
 
+// tiempo máximo que se espera una respuesta de GitHub antes de
+// avisar con un error en vez de quedarse "congelado" para siempre
+const GH_TIMEOUT_MS = 15000;
+
+function ghFetch(url, options = {}) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), GH_TIMEOUT_MS);
+  return fetch(url, { ...options, signal: controller.signal })
+    .finally(() => clearTimeout(timer));
+}
+
 function ghGetToken() {
   return sessionStorage.getItem('ghToken');
 }
@@ -24,11 +35,14 @@ function ghClearToken() {
 // comprueba que el token es válido y tiene acceso al repositorio
 async function ghVerifyToken(token) {
   try {
-    const res = await fetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`, {
+    const res = await ghFetch(`https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`, {
       headers: { Authorization: `Bearer ${token}` }
     });
     return res.ok;
-  } catch {
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new Error('GitHub tardó demasiado en responder. Revisa tu conexión a internet e inténtalo de nuevo.');
+    }
     return false;
   }
 }
@@ -51,45 +65,52 @@ async function ghUploadMaterial(weekId, file) {
   const path = `materials/${weekId}/${file.name}`;
   const content = await ghFileToBase64(file);
 
-  // si ya existe un archivo con ese nombre, hay que mandar su "sha" para reemplazarlo
-  let sha;
-  const existing = await fetch(
-    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`,
-    { headers: { Authorization: `Bearer ${token}` } }
-  );
-  if (existing.ok) {
-    const data = await existing.json();
-    sha = data.sha;
-  }
-
-  const res = await fetch(
-    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,
-    {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        message: `Subir material: ${path}`,
-        content,
-        branch: GITHUB_BRANCH,
-        ...(sha ? { sha } : {})
-      })
+  try {
+    // si ya existe un archivo con ese nombre, hay que mandar su "sha" para reemplazarlo
+    let sha;
+    const existing = await ghFetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}?ref=${GITHUB_BRANCH}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    if (existing.ok) {
+      const data = await existing.json();
+      sha = data.sha;
     }
-  );
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || 'No se pudo subir el archivo.');
+
+    const res = await ghFetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: `Subir material: ${path}`,
+          content,
+          branch: GITHUB_BRANCH,
+          ...(sha ? { sha } : {})
+        })
+      }
+    );
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || 'No se pudo subir el archivo.');
+    }
+    return res.json();
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new Error('GitHub tardó demasiado en responder. Revisa tu conexión a internet e inténtalo de nuevo.');
+    }
+    throw err;
   }
-  return res.json();
 }
 
 // lista los archivos ya subidos en materials/{weekId}/ — público, sin token,
 // así cualquiera que entre a la página (como tu profesor) puede verlos y descargarlos
 async function ghListMaterial(weekId) {
   try {
-    const res = await fetch(
+    const res = await ghFetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/materials/${weekId}?ref=${GITHUB_BRANCH}&_=${Date.now()}`,
       { cache: 'no-store' }
     );
@@ -106,26 +127,33 @@ async function ghDeleteMaterial(path, sha) {
   const token = ghGetToken();
   if (!token) throw new Error('No hay sesión activa.');
 
-  const res = await fetch(
-    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        message: `Eliminar material: ${path}`,
-        sha,
-        branch: GITHUB_BRANCH
-      })
+  try {
+    const res = await ghFetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: `Eliminar material: ${path}`,
+          sha,
+          branch: GITHUB_BRANCH
+        })
+      }
+    );
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || 'No se pudo eliminar el archivo.');
     }
-  );
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    throw new Error(err.message || 'No se pudo eliminar el archivo.');
+    return res.json();
+  } catch (err) {
+    if (err.name === 'AbortError') {
+      throw new Error('GitHub tardó demasiado en responder. Revisa tu conexión a internet e inténtalo de nuevo.');
+    }
+    throw err;
   }
-  return res.json();
 }
 
-window.ghMaterials = { ghGetToken, ghSetToken,
+window.ghMaterials = { ghGetToken, ghSetToken, ghClearToken, ghVerifyToken, ghUploadMaterial, ghListMaterial, ghDeleteMaterial };
