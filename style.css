@@ -847,6 +847,7 @@ img, svg{ image-rendering: pixelated; }
   .pixel-cloud, .coin{ animation: none; }
 }
 
+
 /* =========================================================
    MINIJUEGO "SUBE AL SERVIDOR"
    ========================================================= */
@@ -966,6 +967,7 @@ img, svg{ image-rendering: pixelated; }
 @media (prefers-reduced-motion: reduce){
   .game-bg__mountains, .game-bg__hills, .game-bg__ground{ animation:none; }
 }
+
 /* =========================================================
    MATERIALES (unidades.html) — lista de archivos, íconos y visor
    ========================================================= */
