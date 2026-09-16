@@ -90,7 +90,8 @@ async function ghUploadMaterial(weekId, file) {
 async function ghListMaterial(weekId) {
   try {
     const res = await fetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/materials/${weekId}?ref=${GITHUB_BRANCH}`
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/materials/${weekId}?ref=${GITHUB_BRANCH}&_=${Date.now()}`,
+      { cache: 'no-store' }
     );
     if (!res.ok) return [];
     const data = await res.json();
@@ -127,4 +128,4 @@ async function ghDeleteMaterial(path, sha) {
   return res.json();
 }
 
-window.ghMaterials = { ghGetToken, ghSetToken, ghClearToken, ghVerifyToken, ghUploadMaterial, ghListMaterial, ghDeleteMaterial };
+window.ghMaterials = { ghGetToken, ghSetToken,
