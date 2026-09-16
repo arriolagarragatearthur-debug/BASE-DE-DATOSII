@@ -570,7 +570,16 @@ section{
 /* =========================================================
    UNIDADES (acordeón + semanas)
    ========================================================= */
-.units-list{ padding-top: 30px; display:flex; flex-direction:column; gap:16px; }
+.units-list{
+  padding-top: 30px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  max-width: none;   /* antes heredaba max-width:1120px de "section" y quedaba centrado con márgenes grandes */
+  width: 100%;
+  padding-left: clamp(12px, 2vw, 28px);
+  padding-right: clamp(12px, 2vw, 28px);
+}
 
 .unit-accordion{
   background: var(--bg-panel);
@@ -982,10 +991,10 @@ img, svg{ image-rendering: pixelated; }
   font-family: var(--font-mono);
   font-size:.82rem;
   color: var(--accent);
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
+  overflow-wrap: anywhere;   /* antes: nowrap + ellipsis cortaba nombres largos como "Manual_Instalacion_SQLServer2025.pdf" */
+  white-space: normal;
   flex:1;
+  min-width: 0;
 }
 .material-item__actions{
   display:flex;
