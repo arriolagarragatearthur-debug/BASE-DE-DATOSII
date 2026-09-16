@@ -64,18 +64,41 @@
     modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
   }
+  let currentBlobUrl = null; // URL temporal del último PDF mostrado, para liberarla al cerrar
+
   function openModal(file) {
     const body = document.getElementById('materialModalBody');
     document.getElementById('materialModalName').textContent = file.name;
+
+    if (currentBlobUrl) {
+      URL.revokeObjectURL(currentBlobUrl);
+      currentBlobUrl = null;
+    }
+
     if (isImage(file.name)) {
       body.innerHTML = `<img src="${file.download_url}" alt="${file.name}">`;
     } else if (extOf(file.name) === 'pdf') {
       // GitHub sirve los PDF sin el encabezado "Content-Type: application/pdf",
-      // así que el navegador no los dibuja dentro de un <iframe> normal (se ve
-      // en negro). Usamos el visor de PDF.js, que descarga el archivo por su
-      // cuenta y sí sabe renderizarlo.
-      const viewerUrl = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(file.download_url)}`;
-      body.innerHTML = `<iframe src="${viewerUrl}" title="${file.name}"></iframe>`;
+      // así que un <iframe> normal no lo dibuja (se ve en negro). La solución
+      // confiable es descargar el archivo con fetch() y volver a envolverlo en
+      // un Blob marcado explícitamente como "application/pdf": así el propio
+      // navegador usa su visor nativo de PDF sin depender de ningún servicio
+      // externo (el visor público de Mozilla, por ejemplo, bloquea a propósito
+      // que otras páginas lo incrusten en un iframe con un archivo externo).
+      body.innerHTML = '<p class="week-card__desc" style="padding:16px;">Cargando PDF…</p>';
+      fetch(file.download_url)
+        .then(res => {
+          if (!res.ok) throw new Error('No se pudo descargar el archivo.');
+          return res.blob();
+        })
+        .then(rawBlob => {
+          const pdfBlob = new Blob([rawBlob], { type: 'application/pdf' });
+          currentBlobUrl = URL.createObjectURL(pdfBlob);
+          body.innerHTML = `<iframe src="${currentBlobUrl}" title="${file.name}"></iframe>`;
+        })
+        .catch(err => {
+          body.innerHTML = `<p class="week-card__desc" style="padding:16px;">⚠️ No se pudo mostrar el PDF (${err.message}). Usa el botón de descargar (⬇️) para abrirlo.</p>`;
+        });
     } else {
       body.innerHTML = `<iframe src="${file.download_url}" title="${file.name}"></iframe>`;
     }
@@ -84,6 +107,10 @@
   function closeModal() {
     modal.hidden = true;
     document.getElementById('materialModalBody').innerHTML = '';
+    if (currentBlobUrl) {
+      URL.revokeObjectURL(currentBlobUrl);
+      currentBlobUrl = null;
+    }
   }
 
   // --- pinta una actividad (lista de archivos + formulario admin) ---
