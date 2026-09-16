@@ -78,13 +78,6 @@
     if (isImage(file.name)) {
       body.innerHTML = `<img src="${file.download_url}" alt="${file.name}">`;
     } else if (extOf(file.name) === 'pdf') {
-      // GitHub sirve los PDF sin el encabezado "Content-Type: application/pdf",
-      // así que un <iframe> normal no lo dibuja (se ve en negro). La solución
-      // confiable es descargar el archivo con fetch() y volver a envolverlo en
-      // un Blob marcado explícitamente como "application/pdf": así el propio
-      // navegador usa su visor nativo de PDF sin depender de ningún servicio
-      // externo (el visor público de Mozilla, por ejemplo, bloquea a propósito
-      // que otras páginas lo incrusten en un iframe con un archivo externo).
       body.innerHTML = '<p class="week-card__desc" style="padding:16px;">Cargando PDF…</p>';
       fetch(file.download_url)
         .then(res => {
