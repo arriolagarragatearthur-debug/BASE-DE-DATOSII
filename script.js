@@ -159,8 +159,11 @@ document.querySelectorAll('.coin').forEach(coin => {
 });
 
 // --- enganchar sonidos a la interfaz existente ---
+// (el "blip" al pasar el mouse solo suena si el audio ya fue
+// desbloqueado por un click real; así se evita el aviso del
+// navegador por intentar crear audio sin un gesto del usuario)
 document.querySelectorAll('.menu__link').forEach(link => {
-  link.addEventListener('mouseenter', playBlip);
+  link.addEventListener('mouseenter', () => { if (audioCtx) playBlip(); });
 });
 document.querySelectorAll('.btn').forEach(btn => {
   btn.addEventListener('click', playJump);
