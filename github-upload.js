@@ -100,4 +100,31 @@ async function ghListMaterial(weekId) {
   }
 }
 
-window.ghMaterials = { ghGetToken, ghSetToken, ghClearToken, ghVerifyToken, ghUploadMaterial, ghListMaterial };
+// elimina un archivo en materials/{weekId}/{fileName}
+async function ghDeleteMaterial(path, sha) {
+  const token = ghGetToken();
+  if (!token) throw new Error('No hay sesión activa.');
+
+  const res = await fetch(
+    `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${path}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: `Eliminar material: ${path}`,
+        sha,
+        branch: GITHUB_BRANCH
+      })
+    }
+  );
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.message || 'No se pudo eliminar el archivo.');
+  }
+  return res.json();
+}
+
+window.ghMaterials = { ghGetToken, ghSetToken, ghClearToken, ghVerifyToken, ghUploadMaterial, ghListMaterial, ghDeleteMaterial };
