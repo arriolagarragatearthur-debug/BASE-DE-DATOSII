@@ -110,10 +110,13 @@ async function ghUploadMaterial(weekId, file) {
 // así cualquiera que entre a la página (como tu profesor) puede verlos y descargarlos
 async function ghListMaterial(weekId) {
   try {
+    const token = ghGetToken();
+    const headers = token ? { Authorization: `Bearer ${token}` } : {};
     const res = await ghFetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/materials/${weekId}?ref=${GITHUB_BRANCH}&_=${Date.now()}`,
-      { cache: 'no-store' }
+      { cache: 'no-store', headers }
     );
+    if (res.status === 403 || res.status === 429) return null; // límite de solicitudes de GitHub alcanzado
     if (!res.ok) return [];
     const data = await res.json();
     return Array.isArray(data) ? data : [];
