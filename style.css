@@ -1061,3 +1061,25 @@ img, svg{ image-rendering: pixelated; }
   display:block;
   margin:0 auto;
 }
+
+/* =========================================================
+   ACTIVIDADES DENTRO DE CADA SEMANA (unidades.html)
+   ========================================================= */
+.activity-list{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+.activity-block{
+  border:1px solid var(--line-soft);
+  border-radius:8px;
+  padding:10px 12px;
+}
+.activity-block__title{
+  font-family: var(--font-mono);
+  font-size:.72rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color: var(--amber);
+  margin:0 0 8px;
+}
