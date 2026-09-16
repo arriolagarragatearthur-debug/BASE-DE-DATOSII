@@ -32,6 +32,93 @@ function ghClearToken() {
   sessionStorage.removeItem('ghToken');
 }
 
+/* =========================================================
+   CACHÉ DEL ÁRBOL COMPLETO DEL REPOSITORIO
+   La API pública de GitHub sin autenticar permite solo 60
+   solicitudes por hora por IP. Antes, CADA actividad de CADA
+   semana pedía su propia lista (hasta 64 llamadas si se abrían
+   las 4 unidades), así que el límite se agotaba casi al abrir
+   la página. Ahora se pide el árbol del repositorio completo
+   UNA sola vez y se reutiliza para listar cualquier semana o
+   actividad, así que una visita normal gasta 1 sola solicitud
+   en vez de decenas.
+   Nota: el límite de 60/h lo impone GitHub del lado del servidor
+   según la IP — no es algo que el código pueda "quitar" o volver
+   ilimitado. Esta caché reduce el consumo real al mínimo posible
+   sin backend propio, que sería la única forma de eliminarlo del
+   todo.
+   ========================================================= */
+let ghTreeCache = null;
+let ghTreePromise = null;
+const GH_TREE_CACHE_KEY = 'ghTreeCacheV1';
+const GH_TREE_CACHE_TTL = 5 * 60 * 1000; // 5 minutos
+
+function ghReadTreeSessionCache() {
+  try {
+    const raw = sessionStorage.getItem(GH_TREE_CACHE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    if (!parsed || (Date.now() - parsed.ts) > GH_TREE_CACHE_TTL) return null;
+    return parsed.tree;
+  } catch {
+    return null;
+  }
+}
+function ghWriteTreeSessionCache(tree) {
+  try {
+    sessionStorage.setItem(GH_TREE_CACHE_KEY, JSON.stringify({ ts: Date.now(), tree }));
+  } catch {
+    /* si sessionStorage está lleno o bloqueado, simplemente no cachea entre recargas */
+  }
+}
+
+// pide el árbol completo del repo en UNA sola llamada. Devuelve null si
+// GitHub respondió con límite de solicitudes alcanzado.
+async function ghGetTree(forceRefresh = false) {
+  if (!forceRefresh && ghTreeCache) return ghTreeCache;
+  if (!forceRefresh) {
+    const cached = ghReadTreeSessionCache();
+    if (cached) { ghTreeCache = cached; return cached; }
+  }
+  if (ghTreePromise) return ghTreePromise;
+
+  const token = ghGetToken();
+  const headers = token ? { Authorization: `Bearer ${token}` } : {};
+
+  ghTreePromise = (async () => {
+    try {
+      const res = await ghFetch(
+        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/git/trees/${GITHUB_BRANCH}?recursive=1`,
+        { headers }
+      );
+      if (res.status === 403 || res.status === 429) return null;
+      if (!res.ok) return [];
+      const data = await res.json();
+      const tree = Array.isArray(data.tree) ? data.tree : [];
+      ghTreeCache = tree;
+      ghWriteTreeSessionCache(tree);
+      return tree;
+    } catch {
+      return [];
+    } finally {
+      ghTreePromise = null;
+    }
+  })();
+
+  return ghTreePromise;
+}
+
+// se llama después de subir/eliminar un archivo para que el próximo listado
+// no muestre datos viejos de la caché
+function ghInvalidateTree() {
+  ghTreeCache = null;
+  try { sessionStorage.removeItem(GH_TREE_CACHE_KEY); } catch {}
+}
+
+function ghRawUrl(path) {
+  return `https://raw.githubusercontent.com/${GITHUB_OWNER}/${GITHUB_REPO}/${GITHUB_BRANCH}/${path.split('/').map(encodeURIComponent).join('/')}`;
+}
+
 // comprueba que el token es válido y tiene acceso al repositorio
 async function ghVerifyToken(token) {
   try {
@@ -97,6 +184,7 @@ async function ghUploadMaterial(weekId, file) {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.message || 'No se pudo subir el archivo.');
     }
+    ghInvalidateTree();
     return res.json();
   } catch (err) {
     if (err.name === 'AbortError') {
@@ -107,22 +195,26 @@ async function ghUploadMaterial(weekId, file) {
 }
 
 // lista los archivos ya subidos en materials/{weekId}/ — público, sin token,
-// así cualquiera que entre a la página (como tu profesor) puede verlos y descargarlos
+// así cualquiera que entre a la página (como tu profesor) puede verlos y descargarlos.
+// Ya no hace una llamada a GitHub por cada actividad: reutiliza el árbol
+// completo del repositorio (ver ghGetTree arriba), pedido una sola vez.
 async function ghListMaterial(weekId) {
-  try {
-    const token = ghGetToken();
-    const headers = token ? { Authorization: `Bearer ${token}` } : {};
-    const res = await ghFetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/materials/${weekId}?ref=${GITHUB_BRANCH}&_=${Date.now()}`,
-      { cache: 'no-store', headers }
-    );
-    if (res.status === 403 || res.status === 429) return null; // límite de solicitudes de GitHub alcanzado
-    if (!res.ok) return [];
-    const data = await res.json();
-    return Array.isArray(data) ? data : [];
-  } catch {
-    return [];
-  }
+  const tree = await ghGetTree();
+  if (tree === null) return null; // límite de solicitudes de GitHub alcanzado
+
+  const prefix = `materials/${weekId}/`;
+  return tree
+    .filter(entry =>
+      entry.type === 'blob' &&
+      entry.path.startsWith(prefix) &&
+      !entry.path.slice(prefix.length).includes('/') // solo archivos directos, no subcarpetas
+    )
+    .map(entry => ({
+      name: entry.path.slice(prefix.length),
+      path: entry.path,
+      sha: entry.sha,
+      download_url: ghRawUrl(entry.path)
+    }));
 }
 
 // elimina un archivo en materials/{weekId}/{fileName}
@@ -150,6 +242,7 @@ async function ghDeleteMaterial(path, sha) {
       const err = await res.json().catch(() => ({}));
       throw new Error(err.message || 'No se pudo eliminar el archivo.');
     }
+    ghInvalidateTree();
     return res.json();
   } catch (err) {
     if (err.name === 'AbortError') {
@@ -159,4 +252,8 @@ async function ghDeleteMaterial(path, sha) {
   }
 }
 
-window.ghMaterials = { ghGetToken, ghSetToken, ghClearToken, ghVerifyToken, ghUploadMaterial, ghListMaterial, ghDeleteMaterial };
+window.ghMaterials = {
+  ghGetToken, ghSetToken, ghClearToken, ghVerifyToken,
+  ghUploadMaterial, ghListMaterial, ghDeleteMaterial,
+  ghInvalidateTree
+};
