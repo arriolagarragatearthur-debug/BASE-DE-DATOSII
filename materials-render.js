@@ -67,9 +67,18 @@
   function openModal(file) {
     const body = document.getElementById('materialModalBody');
     document.getElementById('materialModalName').textContent = file.name;
-    body.innerHTML = isImage(file.name)
-      ? `<img src="${file.download_url}" alt="${file.name}">`
-      : `<iframe src="${file.download_url}" title="${file.name}"></iframe>`;
+    if (isImage(file.name)) {
+      body.innerHTML = `<img src="${file.download_url}" alt="${file.name}">`;
+    } else if (extOf(file.name) === 'pdf') {
+      // GitHub sirve los PDF sin el encabezado "Content-Type: application/pdf",
+      // así que el navegador no los dibuja dentro de un <iframe> normal (se ve
+      // en negro). Usamos el visor de PDF.js, que descarga el archivo por su
+      // cuenta y sí sabe renderizarlo.
+      const viewerUrl = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(file.download_url)}`;
+      body.innerHTML = `<iframe src="${viewerUrl}" title="${file.name}"></iframe>`;
+    } else {
+      body.innerHTML = `<iframe src="${file.download_url}" title="${file.name}"></iframe>`;
+    }
     modal.hidden = false;
   }
   function closeModal() {
