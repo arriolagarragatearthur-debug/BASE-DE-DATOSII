@@ -106,6 +106,32 @@
     }
   }
 
+  // el atributo "download" del navegador no funciona en enlaces de otro
+  // dominio (raw.githubusercontent.com); para forzar la descarga real
+  // hay que traer el archivo por código y guardarlo como blob local
+  async function forceDownload(url, filename, btn) {
+    const originalText = btn.textContent;
+    btn.textContent = '⏳';
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('No se pudo descargar');
+      const blob = await res.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(blobUrl), 5000);
+    } catch (err) {
+      // si por algo falla el fetch (red, CORS), al menos abrimos el archivo
+      window.open(url, '_blank', 'noopener');
+    } finally {
+      btn.textContent = originalText;
+    }
+  }
+
   // --- pinta una actividad (lista de archivos + formulario admin) ---
   async function renderSlot(container, slotId) {
     const files = await ghListMaterial(slotId);
@@ -146,15 +172,13 @@
         viewBtn.textContent = '👁️';
         viewBtn.addEventListener('click', () => openModal(f));
 
-        const downloadBtn = document.createElement('a');
+        const downloadBtn = document.createElement('button');
+        downloadBtn.type = 'button';
         downloadBtn.className = 'icon-btn';
         downloadBtn.title = 'Descargar';
         downloadBtn.setAttribute('aria-label', 'Descargar ' + f.name);
-        downloadBtn.href = f.download_url;
-        downloadBtn.download = f.name;
-        downloadBtn.target = '_blank';
-        downloadBtn.rel = 'noopener';
         downloadBtn.textContent = '⬇️';
+        downloadBtn.addEventListener('click', () => forceDownload(f.download_url, f.name, downloadBtn));
 
         actions.appendChild(viewBtn);
         actions.appendChild(downloadBtn);
